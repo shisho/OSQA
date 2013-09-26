@@ -2,8 +2,14 @@ from django import template
 from django.utils.safestring import mark_safe
 import logging
 import markdown
+from django.utils.encoding import smart_unicode
+from django.template.defaultfilters import slugify
 
 register = template.Library()
+
+@register.filter
+def slug(value):
+    return slugify(smart_unicode(value))
 
 @template.defaultfilters.stringfilter
 @register.filter
@@ -37,11 +43,13 @@ def decorated_int(number, cls="thousand"):
 
 @register.filter
 def or_preview(setting, request):
+    # TODO fix that
+    """
     if request.user.is_superuser:
         previewing = request.session.get('previewing_settings', {})
         if setting.name in previewing:
             return previewing[setting.name]
-
+    """
     return setting.value
 
 @register.filter

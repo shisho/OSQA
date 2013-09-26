@@ -73,6 +73,9 @@ class StringMorsel(Morsel):
     def decode(self, *args):
         return self.__repr__()
 
+    def split(self, *args):
+        return self.decode().split(*args)
+
 class CookieHandler(SimpleCookie):
     def __set(self, key, real_value, coded_value):
         """Private method for setting a cookie's value"""

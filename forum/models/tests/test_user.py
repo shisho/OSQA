@@ -22,12 +22,6 @@ class UserTest(TestCase):
     def test_get_absolute_url(self):
         self.assert_(True)
 
-    def test_get_messages(self):
-        self.assert_(True)
-
-    def test_delete_messages(self):
-        self.assert_(True)
-
     def test_get_profile_url(self):
         self.assert_(True)
 

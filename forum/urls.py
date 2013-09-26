@@ -2,13 +2,16 @@ import startup
 
 import os.path
 from forum import settings
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.conf import settings as djsettings
 from django.contrib import admin
 from forum import views as app
 from forum.sitemap import OsqaSitemap
 from django.utils.translation import ugettext as _
+from django.views.generic import RedirectView
+
 import logging
+
 
 admin.autodiscover()
 
@@ -85,7 +88,7 @@ core_urls = (
     url(r'^%s(?P<id>\d+)/' % _('convert_to_question/'), app.writers.convert_to_question,name='convert_to_question'),
     url(r'^%s(?P<id>\d+)/' % _('wikify/'), app.commands.wikify, name='wikify'),
     
-    url(r'^%s(?P<id>\d+)/(?P<slug>[\w-]*)$' % _('question/'), 'django.views.generic.simple.redirect_to', {'url': '/questions/%(id)s/%(slug)s'}),
+    url(r'^%s(?P<id>\d+)/(?P<slug>[\w-]*)$' % _('question/'), RedirectView.as_view(url='/questions/%(id)s/%(slug)s')),
     url(r'^%s(?P<id>\d+)/?$' % _('questions/'), app.readers.question, name='question'),
     url(r'^%s(?P<id>\d+)/(?P<slug>.*)/(?P<answer>\d+)$' % _('questions/'), app.readers.question),
     url(r'^%s(?P<id>\d+)/(?P<slug>.*)$' % _('questions/'), app.readers.question, name='question'),
@@ -103,7 +106,6 @@ core_urls = (
     url(r'^%s(?P<id>\d+)/(?P<slug>.*)/%s$' % (_('users/'), _('edit/')), app.users.edit_user, name='edit_user'),
     url(r'^%s(?P<id>\d+)/%s$' % (_('users/'), _('award/')), app.users.award_points, name='user_award_points'),
     url(r'^%s(?P<id>\d+)/%s$' % (_('users/'), _('suspend/')), app.users.suspend, name='user_suspend'),
-    url(r'^%s(?P<id>\d+)/%s$' % (_('users/'), _('report/')), app.users.report_user, name='user_report'),
     url(r'^%s(?P<id>\d+)/%s(?P<action>[a-z]+)/(?P<status>[a-z]+)/$' % (_('users/'), _('powers/')), app.users.user_powers, name='user_powers'),
     url((core_user_urls_prefix + '/%s$') % (_('users/'), _('subscriptions/')), app.users.user_subscriptions, name='user_subscriptions'),
     url(r'^%s(?P<id>\d+)/(?P<slug>.*)/%s$' % (_('users/'), _('preferences/')), app.users.user_preferences, name='user_preferences'),

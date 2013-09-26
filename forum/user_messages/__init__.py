@@ -29,8 +29,8 @@ def get_and_delete_messages (request, include_auth=False):
 
     messages = request.session.pop('messages', [])
 
-    if include_auth and request.user.is_authenticated():
-        messages.extend(request.user.get_and_delete_messages())
+    #if include_auth and request.user.is_authenticated():
+    #    messages.extend(request.user.get_and_delete_messages())
     
     return messages
 

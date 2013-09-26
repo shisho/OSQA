@@ -28,12 +28,7 @@ function ajaxFileUpload(imageUrl)
                   if(error != ''){
                     alert(error);
                   }else{
-                    if(fileURL == ''){
-                  	  alert("There was an internal server error uploading your file.\nPermission denied.");
-                  	}
-                  	else{
-                      imageUrl.attr('value', appUrl + fileURL);
-                   }
+                    imageUrl.attr('value', appUrl + fileURL);
                   }
 
               },

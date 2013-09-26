@@ -6,22 +6,15 @@ Time-stamp: <2008-07-19 23:16:19 carljm context_processors.py>
 """
 from django.utils.encoding import StrAndUnicode
 
-from forum.user_messages import get_and_delete_messages
-
+from django.contrib.messages.api import get_messages
 def user_messages (request):
     """
     Returns session messages for the current session.
 
     """
-    messages = request.user.get_and_delete_messages()
-    #if request.user.is_authenticated():
-    #else:
-    #    messages = LazyMessages(request)
-    #import inspect
-    #print inspect.stack()[1]
-    #print messages
-    return { 'user_messages': messages }
+    return { 'user_messages': get_messages(request) }
 
+# Seems like this might not be necesary anymore
 class LazyMessages (StrAndUnicode):
     """
     Lazy message container, so messages aren't actually retrieved from

@@ -7,6 +7,8 @@ from forum import settings
 from forum.settings import APP_SHORT_NAME
 from forum.utils.mail import send_template_email
 
+from django.contrib import messages
+
 class UserJoinsAction(ActionProxy):
     verb = _("joined")
 
@@ -72,13 +74,19 @@ class BonusRepAction(ActionProxy):
         self.repute(self._affected, self._value)
 
         if self._value > 0:
-            self._affected.message_set.create(
-                    message=_("Congratulations, you have been awarded an extra %s reputation points.") % self._value +
-                    '<br />%s' % self.extra.get('message', _('Thank you')))
+            pass
+            #needs request
+            #messages.info(request, _("You have awarded an extra %s reputation points to %s.") % (self._value, self._affected) +
+            #        '<br />%s' % self.extra.get('message', _('Thank you')))
+            #Django 1.4 removed the ability to send persistent messages to users, this needs more work
+            #self._affected.message_set.create(
+            #        message=_("Congratulations, you have been awarded an extra %s reputation points.") % self._value +
+            #        '<br />%s' % self.extra.get('message', _('Thank you')))
         else:
-            self._affected.message_set.create(
-                    message=_("You have been penalized in %s reputation points.") % self._value +
-                    '<br />%s' % self.extra.get('message', ''))
+            pass
+            #needs request
+            #messages.info(request, _("You have penalized %s in %s reputation points.") % (self._affected, self._value) +
+            #        '<br />%s' % self.extra.get('message', ''))
 
     def describe(self, viewer=None):
         value = self.extra.get('value', _('unknown'))
@@ -110,13 +118,13 @@ class AwardPointsAction(ActionProxy):
         self.repute(self._affected, self._value)
         self.repute(self.user, -self._value)
 
-
-        self._affected.message_set.create(
-                message=_("Congratulations, you have been awarded an extra %(points)s reputation %(points_label)s on <a href=\"%(answer_url)s\">this</a> answer.") % {
-                        'points': self._value,
-                        'points_label': ungettext('point', 'points', self._value),
-                        'answer_url': self.node.get_absolute_url()
-                    })
+        #Django 1.4 removed the ability to send persistent messages to users, this needs more work
+        #self._affected.message_set.create(
+        #        message=_("Congratulations, you have been awarded an extra %(points)s reputation %(points_label)s on <a href=\"%(answer_url)s\">this</a> answer.") % {
+        #                'points': self._value,
+        #                'points_label': ungettext('point', 'points', self._value),
+        #                'answer_url': self.node.get_absolute_url()
+        #            })
 
     def describe(self, viewer=None):
         value = self.extra.get('value', _('unknown'))
@@ -163,11 +171,12 @@ class AwardAction(ActionProxy):
 
         self.user.save()
 
-        self.user.message_set.create(message=_(
-                """Congratulations, you have received a badge '%(badge_name)s'. <a href="%(badge_url)s">Find out who has it, too</a>."""
-        ) % dict(
-            badge_name=award.badge.name,
-            badge_url=award.badge.get_absolute_url()))
+        #Django 1.4 removed the ability to send persistent messages to users, this needs more work
+        #self.user.message_set.create(message=_(
+        #        """Congratulations, you have received a badge '%(badge_name)s'. <a href="%(badge_url)s">Find out who has it, too</a>."""
+        #) % dict(
+        #    badge_name=award.badge.name,
+        #    badge_url=award.badge.get_absolute_url()))
 
     def cancel_action(self):
         award = self.award
@@ -193,35 +202,6 @@ class AwardAction(ActionProxy):
         'badge_name': self.award.badge.name,
         }
 
-
-class ReportAction(ActionProxy):
-    verb = _("suspended")
-
-    def process_data(self, **kwargs):
-        self.extra = kwargs
-        # message here?
-
-
-    def process_action(self):
-
-        all_superusers = User.objects.filter(is_superuser=True)
-
-
-        send_template_email(all_superusers, "notifications/user_reported.html", {
-            'reported': self.extra['reported'],
-            'user':self.user,
-            'message': self.extra['publicmsg']
-            }
-            )
-
-    def describe(self, viewer=None):
-
-        return _("%(user)s reported %(reported) : %(msg)s") % {
-            'user': self.hyperlink(self.user.get_profile_url(), self.friendly_username(viewer, self.user)),
-            'reporter': self.extra.get('reported').username,
-            'msg': self.extra.get('publicmsg', _('N/A'))
-        }
-
 class SuspendAction(ActionProxy):
     verb = _("suspended")
 
@@ -241,7 +221,8 @@ class SuspendAction(ActionProxy):
             u.is_active = True
             u._pop_suspension_cache()
             u.save()
-            u.message_set.create(message=_("Your suspension has been removed."))
+            #Django 1.4 removed the ability to send persistent messages to users, this needs more work
+            #u.message_set.create(message=_("Your suspension has been removed."))
 
     def describe(self, viewer=None):
         if self.extra.get('bantype', 'indefinitely') == 'forxdays' and self.extra.get('forxdays', None):

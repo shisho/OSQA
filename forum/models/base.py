@@ -178,13 +178,8 @@ class CachedQuerySet(models.query.QuerySet):
                 yield row
 
     def _get_query_hash(self):
-        try:
-            return md5(unicode(self.query).encode("utf-8")).hexdigest()
-        except:
-            try:
-                return md5(self.query).hexdigest()
-            except:
-                return md5(str(self.query)).hexdigest()
+        return md5(unicode(self.query).encode("utf-8")).hexdigest()
+
 
 
 class CachedManager(models.Manager):
@@ -226,7 +221,7 @@ class DenormalizedField(object):
         cls.add_to_class("reset_%s_cache" % name, reset_cache)
 
 
-class BaseMetaClass(models.Model.__metaclass__):
+class BaseMetaClass(type(models.Model)):
     to_denormalize = []
 
     def __new__(cls, *args, **kwargs):

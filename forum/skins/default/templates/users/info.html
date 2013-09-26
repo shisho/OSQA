@@ -95,20 +95,12 @@
                         {% if not view_user.email_isvalid %}
                             ({% trans "not validated" %})
                             {% ifequal request.user view_user %}
-                                </td></tr><tr><td></td><td><a href="{% url send_validation_email %}">{% trans "Send me a validation link." %}</a>
+                                </td></tr><tr><td></td><td><a href="{% url 'send_validation_email' %}">{% trans "Send me a validation link." %}</a>
                             {% endifequal %}
                         {% endif %}
                     </td>
                 </tr>
                 {% endif %}
-
-                <tr>
-                    <td colspan="2" style="text-align:right">
-                        <a href="{% url user_report user.pk %}" class="ajax-command withprompt">
-                        Report user
-                        </a>
-                    </td>
-                </tr>
 				<!--
                 {% if votes_today_left %}
                 <tr>
@@ -120,13 +112,11 @@
             </table>
         </td>
         <td width="380">
-            {% if not view_user.is_suspended %}
             <div class="user-about">
             {% if view_user.about %}
                 {{view_user.about|markdown}}
             {% endif %}
             </div>
-            {% endif %}
         </td>
     </tr>
 </table>

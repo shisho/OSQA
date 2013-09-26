@@ -13,6 +13,8 @@ from django.utils.translation import ungettext, ugettext as _
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render_to_response
 
+from django.contrib import messages
+
 from forum.models import *
 from forum.utils.decorators import ajax_login_required
 from forum.actions import *
@@ -353,7 +355,7 @@ def accept_answer(request, id):
             """)
 
             # Notify the user with a message that an answer has been accepted
-            request.user.message_set.create(message=msg)
+            messages.info(request, msg)
 
             # Redirect URL should include additional get parameters that might have been attached
             redirect_url = answer.parent.get_absolute_url() + "?accepted_answer=true&%s" % smart_unicode(urlencode(request.GET))

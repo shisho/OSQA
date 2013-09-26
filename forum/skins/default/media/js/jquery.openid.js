@@ -8,7 +8,7 @@ var providers_large = {
     },
     yahoo: {
         name: 'Yahoo',      
-        url: 'http://me.yahoo.com/'
+        url: 'http://yahoo.com/'
     },    
     aol: {
         name: 'AOL',     

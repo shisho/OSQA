@@ -1,14 +1,15 @@
 {% load i18n %}
 {% load question_list_tags %}
+{% load extra_filters %}
 
 <div id="subscription_list" align="left">
     <h2>
         {% trans "Manage your current subscriptions" %}
         <span style="font-size:11px">
             {% if auto %}
-                <a href='{% url user_subscriptions id=view_user.id slug=view_user.username|slugify %}?auto=False&tab=manage'>{% trans "don't show auto-subscribe" %}</a>
+                <a href='{% url user_subscriptions id=view_user.id slug=view_user.username|slug %}?auto=False&tab=manage'>{% trans "don't show auto-subscribe" %}</a>
             {% else %}
-                <a href='{% url user_subscriptions id=view_user.id slug=view_user.username|slugify %}?auto=True&tab=manage'>{% trans "show auto-subscribe" %}</a>
+                <a href='{% url user_subscriptions id=view_user.id slug=view_user.username|slug %}?auto=True&tab=manage'>{% trans "show auto-subscribe" %}</a>
             {% endif %}
         </span>
     </h2>

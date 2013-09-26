@@ -167,9 +167,6 @@ this.makeHtml = function(text) {
 	// attacklab: Restore tildes
 	text = text.replace(/~T/g,"~");
 
-	text = text.replace(/&amp;lt;/g,"<");
-	text = text.replace(/&amp;gt;/g,">");
-
 	return text;
 }
 

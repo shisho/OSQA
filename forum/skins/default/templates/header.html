@@ -4,7 +4,7 @@
 	<div id="roof">
 	  
 		<div id="logo">
-			<a href="{% url index %}">
+			<a href="{% url 'index' %}">
 				<img src="{{ settings.APP_LOGO }}" title="{% trans "back to home page" %}" alt="{{settings.APP_TITLE}} logo"/>
 			</a>
 		</div>
@@ -17,15 +17,14 @@
         {% loopregistry page_top_tabs %}{% spaceless %}
             <a id="nav_{{ tab_name }}"{% ifequal tab tab_name %} class="on"{% endifequal %} href="{{ tab_url }}" >{{ tab_title }}</a>
         {% endspaceless %}{% endloopregistry %}
-        <a id="nav_ask" href="{% url ask %}" class="special">{% trans "ask a question" %}</a>
+        <a id="nav_ask" href="{% url 'ask' %}" class="special">{% trans "ask a question" %}</a>
     </div>
   </div>
 
   <div class="clear"></div>
   
 	<div id="searchBar">
-    <form action="{% url search %}" method="get">
-        {% csrf_token %}
+    <form action="{% url 'search' %}" method="get">
         <div>
             <input type="text" class="searchInput" value="{{ keywords }}" name="q" id="keywords" />
             <input type="submit" name="Submit" value="{% trans "search" %}" class="searchBtn" />

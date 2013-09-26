@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, Http404, HttpResponsePermanentRedi
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.template import RequestContext
 from django import template
+from django.utils.http import *
 from django.utils.html import *
 from django.db.models import Q, Count
 from django.utils.translation import ugettext as _

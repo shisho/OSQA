@@ -9,6 +9,8 @@ from django.views.decorators.cache import cache_page
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 
+from django.contrib import messages
+
 from forum import settings
 from forum.views.decorators import login_required
 from forum.forms import FeedbackForm
@@ -68,7 +70,7 @@ def feedback(request):
             send_template_email(recipients, "notifications/feedback.html", context)
 
             msg = _('Thanks for the feedback!')
-            request.user.message_set.create(message=msg)
+            messages.info(request, msg)
             return HttpResponseRedirect(get_next_url(request))
     else:
         form = FeedbackForm(request.user, initial={'next':get_next_url(request)})
