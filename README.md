@@ -7,3 +7,5 @@ Open Source Q&A!
 
 OSQA is a free, entry-level Q&A system. 
 
+
+Example: http://ask.8c1.ru (Q&A for russian ERP system)
