@@ -11,6 +11,8 @@ from django.contrib.auth.middleware import AuthenticationMiddleware
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import smart_str
 
+from django.contrib import messages as user_messages # Name 'messages' is in use below
+
 from base import update_trigger
 
 # Update the user messages
@@ -39,14 +41,8 @@ def process_request(result, self, request):
             if message_revision >= svn_revision and request.user.is_superuser:
                 # We do not want to repeat ourselves. If the message already exists in the message list, we're not going to
                 # add it. That's why first of all we're going the check if it is there.
-                try:
-                    # If the message doesn't exist in the RelatedManager ObjectsDoesNotExist is going to be raised.
-                    request.user.message_set.all().get(message=message_body)
-                except ObjectDoesNotExist:
-                    # Let's create the message.
-                    request.user.message_set.create(message=message_body)
-                except:
-                    pass
+                if message_body not in [m.message for m in user_messages.api.get_messages(request)]:
+                    user_messages.info(request, message_body)
     except ExpatError:
         pass
 

@@ -16,7 +16,7 @@ class GoogleAuthContext(ConsumerTemplateContext):
 
 class YahooAuthConsumer(OpenIdAbstractAuthConsumer):
     def get_user_url(self, request):
-        return 'http://me.yahoo.com/'
+        return 'http://yahoo.com/'
 
 class YahooAuthContext(ConsumerTemplateContext):
     mode = 'BIGICON'
