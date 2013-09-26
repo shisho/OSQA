@@ -4,16 +4,15 @@ import sys
 
 SITE_ID = 1
 
-ADMIN_MEDIA_PREFIX = '/admin_media/'
-SECRET_KEY = '$oo^&_m&qwbib=(_4m_n*zn-d=g#s0he5fx9xonnym#8p6yigm'
+STATIC_URL = '/static/'
 
 CACHE_MAX_KEY_LENGTH = 235
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.csrf.CsrfResponseMiddleware',
     'forum.middleware.django_cookies.CookiePreHandlerMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.common.CommonMiddleware',
     'forum.middleware.extended_user.ExtendedUser',
     'forum.middleware.anon_user.ConnectToSessionMessagesMiddleware',
@@ -28,8 +27,9 @@ MIDDLEWARE_CLASSES = [
 TEMPLATE_CONTEXT_PROCESSORS = [
     'django.core.context_processors.request',
     'forum.context.application_settings',
+    'django.contrib.messages.context_processors.messages',
     'forum.user_messages.context_processors.user_messages',
-    'django.core.context_processors.auth',
+    'django.contrib.auth.context_processors.auth',
 ]
 
 ROOT_URLCONF = 'urls'
@@ -53,16 +53,16 @@ from settings_local import *
 
 if DEBUG:
     TEMPLATE_LOADERS = [
-        'django.template.loaders.filesystem.load_template_source',
-        'django.template.loaders.app_directories.load_template_source',
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
         'forum.modules.template_loader.module_templates_loader',
         'forum.skins.load_template_source',
     ]
 else:
     TEMPLATE_LOADERS = [
         ('django.template.loaders.cached.Loader',(
-            'django.template.loaders.filesystem.load_template_source',
-            'django.template.loaders.app_directories.load_template_source',
+            'django.template.loaders.filesystem.Loader',
+            'django.template.loaders.app_directories.Loader',
             'forum.modules.template_loader.module_templates_loader',
             'forum.skins.load_template_source',
             )),
@@ -118,6 +118,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sitemaps',
     'django.contrib.markup',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
     'forum',
 ]
 
@@ -134,6 +136,7 @@ try:
     INSTALLED_APPS.append('south')
 except:
     pass
+
 
 # Try loading Gunicorn web server
 try:

@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.utils.translation import ugettext as _
 from django.conf import settings
 

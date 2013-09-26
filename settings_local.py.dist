@@ -25,18 +25,20 @@ INTERNAL_IPS = ('127.0.0.1',)
 
 
 DATABASES = {
+    
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'osqa',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(os.path.dirname(__file__),'sqlite.db'),
+     },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(os.path.dirname(__file__),'cache').replace('\\','/'),
     }
 }
 
-CACHE_BACKEND = 'file://%s' % os.path.join(os.path.dirname(__file__),'cache').replace('\\','/')
-#CACHE_BACKEND = 'dummy://'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # This should be equal to your domain name, plus the web application context.
@@ -52,7 +54,11 @@ TIME_ZONE = 'America/New_York'
 USE_I18N = True
 LANGUAGE_CODE = 'en'
 
-DJANGO_VERSION = 1.1
+DJANGO_VERSION = 1.5
 OSQA_DEFAULT_SKIN = 'default'
 
 DISABLED_MODULES = ['books', 'recaptcha', 'project_badges']
+
+SECRET_KEY = 'PUT_YOU_SECRET_KEY_HERE'
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
